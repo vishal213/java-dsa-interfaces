@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Java DSA Reference</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/asciidoctor.css" rel="stylesheet">
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">JBake</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="feed.xml">Subscribe</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+            <li><a href="archive.html">Archive</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+	<div class="page-header">
+		<h1>Java DSA Reference</h1>
+	</div>
+
+	<p><em>25 May 2024</em></p>
+
+	<p><h1>Java DSA Quick Reference</h1>
+<p>Daily cheat sheet covering 15 foundational Java data structures. Each entry lists common initialization patterns, CRUD snippets, and a real-world use case to help cement when to reach for the structure.</p>
+<hr />
+<h2>1. ArrayList</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">List&lt;String&gt; names = new ArrayList&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">names.add(&quot;Alice&quot;);           // Create
+String first = names.get(0);  // Read
+names.set(0, &quot;Bob&quot;);          // Update
+names.remove(&quot;Bob&quot;);          // Delete by value
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Dynamic arrays for UI dropdown options or maintaining ordered search results where random access is required.</li>
+</ul>
+<h2>2. LinkedList</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Deque&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">queue.addLast(10);        // enqueue
+int head = queue.peek();  // peek
+queue.removeFirst();      // dequeue
+queue.clear();            // remove all
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Implementing LRU caches where frequent head/tail updates occur (e.g., session eviction).</li>
+</ul>
+<h2>3. ArrayDeque</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Deque&lt;String&gt; stack = new ArrayDeque&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">stack.push(&quot;a&quot;);          // push
+String top = stack.peek();
+stack.pop();              // pop
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: High-performance stack/queue for parsing expressions or BFS without synchronization overhead.</li>
+</ul>
+<h2>4. Stack</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Stack&lt;Character&gt; brackets = new Stack&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">brackets.push('(');
+char current = brackets.peek();
+brackets.pop();
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Balanced parentheses validation or undo/redo history tracking.</li>
+</ul>
+<h2>5. Queue (LinkedList implementation)</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Queue&lt;Message&gt; messages = new LinkedList&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">messages.offer(new Message(&quot;payment&quot;));
+Message next = messages.peek();
+messages.poll(); // returns null if empty
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Buffering external system events to process at consumer pace when producers are bursty.</li>
+</ul>
+<h2>6. PriorityQueue</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">minHeap.add(5);
+minHeap.offer(1);
+int smallest = minHeap.peek();
+minHeap.poll(); // removes smallest
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Scheduling jobs by priority or tracking top-K trending items with efficient extraction.</li>
+</ul>
+<h2>7. HashMap</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Map&lt;String, Integer&gt; wordCount = new HashMap&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">wordCount.put(&quot;java&quot;, 1);
+int count = wordCount.getOrDefault(&quot;java&quot;, 0);
+wordCount.put(&quot;java&quot;, count + 1);
+wordCount.remove(&quot;java&quot;);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Counting request frequencies per endpoint for rate limiting or analytics.</li>
+</ul>
+<h2>8. LinkedHashMap</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Map&lt;String, Integer&gt; ordered = new LinkedHashMap&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">ordered.put(&quot;a&quot;, 1);
+ordered.put(&quot;b&quot;, 2);
+ordered.get(&quot;a&quot;);
+ordered.remove(&quot;b&quot;);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: LRU cache (override <code>removeEldestEntry</code>) or preserving insertion order for request tracing.</li>
+</ul>
+<h2>9. TreeMap</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">NavigableMap&lt;Integer, String&gt; sorted = new TreeMap&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">sorted.put(10, &quot;low&quot;);
+sorted.put(20, &quot;medium&quot;);
+String first = sorted.firstEntry().getValue();
+sorted.remove(10);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Range queries such as finding nearest price points or time-based scheduling.</li>
+</ul>
+<h2>10. HashSet</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Set&lt;String&gt; seen = new HashSet&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">seen.add(&quot;order-1&quot;);
+boolean exists = seen.contains(&quot;order-1&quot;);
+seen.remove(&quot;order-1&quot;);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Deduplicating user IDs in batch imports or tracking processed messages.</li>
+</ul>
+<h2>11. LinkedHashSet</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Set&lt;String&gt; recent = new LinkedHashSet&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">recent.add(&quot;u1&quot;);
+recent.add(&quot;u2&quot;);
+recent.iterator().next(); // oldest inserted
+recent.remove(&quot;u1&quot;);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Maintaining deduplicated, ordered history such as recently viewed products.</li>
+</ul>
+<h2>12. TreeSet</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">NavigableSet&lt;Integer&gt; scores = new TreeSet&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">scores.add(85);
+scores.add(92);
+int best = scores.last();
+scores.remove(85);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Leaderboards requiring sorted access or finding floor/ceiling values in matching engines.</li>
+</ul>
+<h2>13. ConcurrentHashMap</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">ConcurrentMap&lt;String, Long&gt; stats = new ConcurrentHashMap&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">stats.putIfAbsent(&quot;hits&quot;, 0L);
+stats.compute(&quot;hits&quot;, (k, v) -&gt; v + 1);
+stats.remove(&quot;hits&quot;, 0L);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Thread-safe counters like tracking active sessions per tenant in multi-threaded services.</li>
+</ul>
+<h2>14. CopyOnWriteArrayList</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">List&lt;String&gt; subscribers = new CopyOnWriteArrayList&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">subscribers.add(&quot;alice@example.com&quot;);
+for (String s : subscribers) {
+    // snapshot iteration
+}
+subscribers.remove(&quot;alice@example.com&quot;);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Observer lists for configuration listeners where reads dominate and modifications are rare.</li>
+</ul>
+<h2>15. BlockingQueue (ArrayBlockingQueue example)</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">BlockingQueue&lt;Order&gt; pending = new ArrayBlockingQueue&lt;&gt;(100);
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">pending.put(new Order(&quot;o1&quot;));      // blocks if full
+Order next = pending.take();       // blocks if empty
+pending.offer(new Order(&quot;o2&quot;));    // non-blocking
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Producer-consumer pipelines such as ingestion workers buffering work before processing threads.</li>
+</ul>
+<h2>16. PriorityBlockingQueue</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">BlockingQueue&lt;Job&gt; scheduled = new PriorityBlockingQueue&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">scheduled.put(new Job(1));       // insert with priority
+Job next = scheduled.take();     // always smallest priority first
+scheduled.removeIf(Job::isDone);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Background job schedulers prioritizing urgent tasks (e.g., fraud alerts) without starving lower priority work.</li>
+</ul>
+<h2>17. ConcurrentLinkedQueue</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Queue&lt;Event&gt; events = new ConcurrentLinkedQueue&lt;&gt;();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">events.offer(new Event(&quot;login&quot;));
+Event peek = events.peek();
+events.poll();                 // non-blocking removal
+events.removeIf(Event::expired);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Lock-free ingestion buffers for metrics/log events in high-throughput microservices.</li>
+</ul>
+<h2>18. EnumSet</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">EnumSet&lt;Permission&gt; perms = EnumSet.noneOf(Permission.class);
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">perms.add(Permission.READ);
+boolean allowed = perms.contains(Permission.WRITE);
+perms.remove(Permission.READ);
+perms.addAll(EnumSet.of(Permission.EXPORT, Permission.DELETE));
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Feature flag combinations or access control checks when domain values are finite enums.</li>
+</ul>
+<h2>19. EnumMap</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">Map&lt;DayOfWeek, Integer&gt; capacity = new EnumMap&lt;&gt;(DayOfWeek.class);
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">capacity.put(DayOfWeek.MONDAY, 120);
+int seats = capacity.getOrDefault(DayOfWeek.FRIDAY, 0);
+capacity.replace(DayOfWeek.MONDAY, 150);
+capacity.remove(DayOfWeek.SUNDAY);
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Scheduling or pricing tables keyed by enum types (e.g., daily staffing levels).</li>
+</ul>
+<h2>20. BitSet</h2>
+<ul>
+<li><strong>Init</strong></li>
+</ul>
+<pre><code class="language-java">BitSet flags = new BitSet();
+</code></pre>
+<ul>
+<li><strong>CRUD</strong></li>
+</ul>
+<pre><code class="language-java">flags.set(10);              // mark bit
+boolean on = flags.get(10);
+flags.clear(10);
+flags.flip(0, 64);          // toggle range
+</code></pre>
+<ul>
+<li><strong>Use case</strong>: Tracking feature availability per user ID or managing large boolean matrices (e.g., prime sieve) with compact memory.</li>
+</ul>
+<hr />
+<h2>How to Practice</h2>
+<ul>
+<li>Build tiny REPL-style tests (JUnit or <code>main</code>) for each structure and simulate daily tasks (e.g., queue draining, map aggregation).</li>
+<li>Time box 5 minutes daily to review 2-3 structures and recall CRUD + use case without peeking.</li>
+<li>Combine structures (e.g., <code>PriorityQueue</code> + <code>HashMap</code> for LFU cache) to deepen understanding.</li>
+</ul>
+</p>
+
+	<hr />
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2014 | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.7</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/prettify.js"></script>
+    
+  </body>
+</html>

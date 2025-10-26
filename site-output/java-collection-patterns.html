@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Java Collection Patterns</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/asciidoctor.css" rel="stylesheet">
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">JBake</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="feed.xml">Subscribe</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+            <li><a href="archive.html">Archive</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+	<div class="page-header">
+		<h1>Java Collection Patterns</h1>
+	</div>
+
+	<p><em>25 May 2024</em></p>
+
+	<p><h1>Java Collection Patterns</h1>
+<p>Practical patterns that surface repeatedly when working with Java data structures. Each pattern lists its purpose, the supporting interfaces or classes, and a short code example you can adapt quickly.</p>
+<hr />
+<h2>1. Iterator Pattern</h2>
+<ul>
+<li><strong>When</strong>: Traverse a collection safely, especially when you need to remove elements during iteration.</li>
+<li><strong>Key types</strong>: <code>Iterator&lt;T&gt;</code>, <code>Collection.iterator()</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">Iterator&lt;Order&gt; it = orders.iterator();
+while (it.hasNext()) {
+    Order order = it.next();
+    if (order.isExpired()) {
+        it.remove(); // safe removal; avoids ConcurrentModificationException
+    }
+}
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: Use <code>Iterator.remove()</code> instead of <code>collection.remove()</code> inside the loop to stay fail-fast safe.</li>
+</ul>
+<h2>2. Iterable + Enhanced for-loop</h2>
+<ul>
+<li><strong>When</strong>: Expose custom data structures so callers can use for-each loops.</li>
+<li><strong>Key types</strong>: <code>Iterable&lt;T&gt;</code>, <code>@Override iterator()</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">public final class RecentUsers implements Iterable&lt;User&gt; {
+    private final Deque&lt;User&gt; users = new ArrayDeque&lt;&gt;();
+
+    @Override
+    public Iterator&lt;User&gt; iterator() {
+        return users.iterator();
+    }
+}
+
+for (User user : recentUsers) {
+    notify(user);
+}
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: Implementing <code>Iterable</code> unlocks enhanced for-loops and <code>StreamSupport</code> for your custom containers.</li>
+</ul>
+<h2>3. ListIterator for Bidirectional Updates</h2>
+<ul>
+<li><strong>When</strong>: Modify or traverse lists in both directions (e.g., editing documents, diff tools).</li>
+<li><strong>Key types</strong>: <code>ListIterator&lt;T&gt;</code>, obtained via <code>list.listIterator()</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">ListIterator&lt;String&gt; li = comments.listIterator();
+while (li.hasNext()) {
+    String text = li.next();
+    if (text.isBlank()) {
+        li.remove();
+    } else if (text.contains(&quot;TODO&quot;)) {
+        li.set(text.replace(&quot;TODO&quot;, &quot;DONE&quot;));
+    }
+}
+while (li.hasPrevious()) {
+    audit(li.previous());
+}
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: <code>ListIterator</code> supports <code>add</code>, <code>set</code>, <code>remove</code>, and reverse traversal without resetting the cursor.</li>
+</ul>
+<h2>4. Map Entry Iteration</h2>
+<ul>
+<li><strong>When</strong>: Iterate through maps efficiently, accessing keys and values together.</li>
+<li><strong>Key types</strong>: <code>Map.Entry&lt;K, V&gt;</code>, <code>entrySet()</code>, <code>keySet()</code>, <code>values()</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">for (Map.Entry&lt;String, Integer&gt; entry : inventory.entrySet()) {
+    if (entry.getValue() == 0) {
+        restock(entry.getKey());
+    }
+}
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: Prefer <code>entrySet()</code> when you need both key and value; avoid repeated <code>map.get(key)</code> calls inside loops.</li>
+</ul>
+<h2>5. Comparator &amp; Comparable Strategy</h2>
+<ul>
+<li><strong>When</strong>: Order elements consistently across collections and algorithms.</li>
+<li><strong>Key types</strong>: <code>Comparable&lt;T&gt;</code>, <code>Comparator&lt;T&gt;</code>, <code>Collections.sort</code>, <code>PriorityQueue</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">record Invoice(String id, BigDecimal amount) implements Comparable&lt;Invoice&gt; {
+    @Override
+    public int compareTo(Invoice other) {
+        return amount.compareTo(other.amount());
+    }
+}
+
+List&lt;Invoice&gt; invoices = new ArrayList&lt;&gt;(unpaid);
+invoices.sort(Comparator.comparing(Invoice::amount).reversed());
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: Implement <code>Comparable</code> for natural ordering; use dedicated <code>Comparator</code>s for context-specific sorts.</li>
+</ul>
+<h2>6. Spliterator &amp; Parallel Streams</h2>
+<ul>
+<li><strong>When</strong>: Process large datasets in parallel or build custom stream sources.</li>
+<li><strong>Key types</strong>: <code>Spliterator&lt;T&gt;</code>, <code>Spliterators</code>, <code>StreamSupport</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">Spliterator&lt;Customer&gt; spliterator = customers.spliterator();
+Stream&lt;Customer&gt; parallelStream = StreamSupport.stream(spliterator, true);
+BigDecimal total = parallelStream
+        .map(Customer::balance)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: Provide accurate characteristics (<code>ORDERED</code>, <code>SIZED</code>) for better splitting; use when built-in collections are insufficient.</li>
+</ul>
+<h2>7. Enumeration Bridge (Legacy)</h2>
+<ul>
+<li><strong>When</strong>: Interoperate with older APIs (e.g., <code>Hashtable</code>, <code>Vector</code>) still returning <code>Enumeration</code>.</li>
+<li><strong>Key types</strong>: <code>Enumeration&lt;T&gt;</code>, <code>Collections.enumeration</code>, <code>Collections.list</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">Enumeration&lt;URL&gt; urls = classLoader.getResources(&quot;config.properties&quot;);
+List&lt;URL&gt; urlList = Collections.list(urls); // converts to List for modern handling
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: Convert ASAP to modern collections; only use <code>Enumeration</code> when interacting with legacy interfaces.</li>
+</ul>
+<h2>8. Collections Utility Wrappers</h2>
+<ul>
+<li><strong>When</strong>: Decorate collections for thread safety, immutability, or read-only views.</li>
+<li><strong>Key types</strong>: <code>Collections.unmodifiableList</code>, <code>Collections.synchronizedMap</code>, <code>Collections.emptyList</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">List&lt;String&gt; internal = new ArrayList&lt;&gt;();
+List&lt;String&gt; view = Collections.unmodifiableList(internal);
+
+Map&lt;String, String&gt; shared = Collections.synchronizedMap(new HashMap&lt;&gt;());
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: Unmodifiable wrappers throw <code>UnsupportedOperationException</code> on mutation; synchronized wrappers still require client-side iteration synchronization.</li>
+</ul>
+<h2>9. Stream Collector Pattern</h2>
+<ul>
+<li><strong>When</strong>: Derive aggregated structures from streams (<code>List</code>, <code>Map</code>, groupings).</li>
+<li><strong>Key types</strong>: <code>Stream&lt;T&gt;</code>, <code>Collectors</code>, <code>toList</code>, <code>groupingBy</code>, <code>joining</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">Map&lt;Status, List&lt;Order&gt;&gt; byStatus = orders.stream()
+        .collect(Collectors.groupingBy(Order::status));
+
+String csv = orders.stream()
+        .map(Order::id)
+        .collect(Collectors.joining(&quot;,&quot;));
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: Collectors compose (<code>collectingAndThen</code>, <code>mapping</code>) for advanced aggregations. Use <code>toList()</code> (Java 16+) for unmodifiable results by default.</li>
+</ul>
+<h2>10. Optional Iteration Helpers</h2>
+<ul>
+<li><strong>When</strong>: Integrate optional values into collection pipelines without verbose null checks.</li>
+<li><strong>Key types</strong>: <code>Optional</code>, <code>stream()</code>, <code>ifPresent</code>.</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<pre><code class="language-java">Optional&lt;User&gt; maybeUser = userRepository.findById(id);
+maybeUser.ifPresent(activeUsers::add);
+
+List&lt;String&gt; emails = maybeUser.stream()
+        .map(User::email)
+        .toList();
+</code></pre>
+<ul>
+<li><strong>Notes</strong>: <code>Optional.stream()</code> (Java 9+) allows seamless inclusion in stream pipelines; <code>ifPresentOrElse</code> helps with branching logic.</li>
+</ul>
+<hr />
+<h2>Practice Tips</h2>
+<ul>
+<li>Translate existing loops to iterators or streams to see which pattern fits best.</li>
+<li>When designing custom collections, implement both <code>Iterable</code> and useful <code>Spliterator</code> characteristics for maximum interoperability.</li>
+<li>Review fail-fast behavior: modifying collections outside iterator patterns triggers exceptions—plan your traversal strategy accordingly.</li>
+</ul>
+</p>
+
+	<hr />
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2014 | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.7</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/prettify.js"></script>
+    
+  </body>
+</html>
